@@ -12,17 +12,18 @@
 
     <!-- toolbar.js dependencies -->
     <script src="lib/jquery-1.7.1.min.js"></script>
-    <script src="lib/undescore-1.2.2.min.js"></script>
-    <script src="lib/backbone-0.5.4.min.js"></script>
 
 
     <script src="src/toolbar.js"></script>
     <script type="text/javascript" charset="utf-8">
-        $.toolbar.initialize({
-            id: 'demo-toolbar',
-            src: 'toolbar.html',
+        $.toolbar({
+            id: 'top-toolbar',
             name: 'demo-toolbar',
             klass: 'demo-background',
+            resources: [
+                'demo/toolbar.css',
+                'lib/jquery-1.7.1.min.js'
+            ],
             buttons: [
                 {
                     title: 'Home',
@@ -39,7 +40,7 @@
                 {
                     title: 'Dropdown',
                     id: 'dropdown-button',
-                    submenu: [
+                    buttons: [
                         {
                             title: 'Item 1',
                             url: 'http://www.google.com'

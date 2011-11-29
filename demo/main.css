@@ -91,11 +91,9 @@ p {
 
 }
 
-#demo-toolbar {
-    height: 46px;
-    overflow: hidden;
-    width: 100%;
+#top-toolbar {
     position: fixed;
+    height: 56px;
     top: 0;
     left: 0;
 }

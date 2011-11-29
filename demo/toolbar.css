@@ -45,6 +45,10 @@ li {
     float: left;
 }
 
+.toolbar > div > ul > li > div {
+    position: relative;
+}
+
 .toolbar > div > ul > li.active > a {
     background: #fff;
     color: #444444;
@@ -54,7 +58,7 @@ li {
     -o-text-shadow: none;
 }
 
-.toolbar-submenu {
+.toolbar > div > ul > li.active > div {
     background: #fff;
     z-index: 999;
     width: 150px;
@@ -74,11 +78,11 @@ li {
 
 }
 
-.toolbar-submenu > ul {
+.toolbar > div > ul > li.active ul {
     padding: 1em 0.5em;
 }
 
-.toolbar-submenu a {
+.toolbar > div > ul > li.active a {
     color: #444;
     text-shadow: none;
     -moz-text-shadow: none;
