@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta content="chrome=1" http-equiv="X-UA-Compatible">
+
+    <title>plone.toolbar.js examples</title>
+
+    <!-- demo styles -->
+    <link rel="stylesheet" type="text/css" href="css/example.css" />
+
+    <!-- plone.toolbar.js dependencies -->
+    <script src="lib/jquery-1.7.1.min.js"></script>
+
+    <!-- plone.toolbar.js itself -->
+    <script src="src/plone.toolbar.js"></script>
+
+    <!-- initializing toolbar -->
+    <script type="text/javascript" charset="utf-8">
+        $.plone.toolbar({
+            attributes: { id: 'swirl-toolbar' },
+            resources_css: [
+                { src: 'src/plone.toolbar.swirl.css' }
+            ],
+            resources_js: [
+                { src: 'lib/jquery-1.7.1.min.js' }
+            ],
+            buttons: [
+                { title: 'Contents',
+                  url: '#folder_contents',
+                  category: 'leftactions' },
+                { title: 'View',
+                  url: '#view',
+                  category: 'leftactions' },
+                { title: 'Sharing',
+                  url: '#sharing',
+                  category: 'leftactions' },
+                { title: 'Display &#9660;',
+                  url: '#display',
+                  category: 'rightactions' },
+                { title: 'Add new ... &#9660;',
+                  url: '#add',
+                  category: 'rightactions',
+                  submenu: [
+                    { title: 'Page',
+                      url: '#add-page' },
+                    { title: 'Event',
+                      url: '#add-event' }
+                  ]
+                },
+                { title: 'State: Private &#9660;',
+                  url: '#change-state',
+                  category: 'rightactions',
+                  submenu: [
+                    { title: 'Publish',
+                      url: '#publish' },
+                    { title: 'Send for review',
+                      url: '#send-review-review' }
+                  ]
+                },
+                { title: 'Rob Gietema &#9660;',
+                  icon: 'css/portrait.png',
+                  category: 'personalactions' }
+            ]
+        });
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>

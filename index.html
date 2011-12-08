@@ -5,60 +5,66 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta content="chrome=1" http-equiv="X-UA-Compatible">
 
-    <title>toolbar.js</title>
+    <title>plone.toolbar.js</title>
 
-    <!-- this demo resources -->
-    <link rel="stylesheet" href="demo/main.css" type="text/css" />
+    <!-- demo styles -->
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
 
-    <!-- toolbar.js dependencies -->
+    <!-- plone.toolbar.js dependencies -->
     <script src="lib/jquery-1.7.1.min.js"></script>
 
+    <!-- plone.toolbar.js itself -->
+    <script src="src/plone.toolbar.js"></script>
 
-    <script src="src/toolbar.js"></script>
+    <!-- initializing toolbar -->
     <script type="text/javascript" charset="utf-8">
-        $.toolbar({
-            id: 'top-toolbar',
-            name: 'demo-toolbar',
-            klass: 'demo-background',
-            resources: [
-                'demo/toolbar.css',
-                'lib/jquery-1.7.1.min.js'
+        $.plone.toolbar({
+            attributes: { id: 'swirl-toolbar' },
+            resources_css: [
+                {
+                    rendering: 'link',
+                    media: 'screen',
+                    rel: 'stylesheet',
+                    title: 'swirl theme',
+                    src: 'src/plone.toolbar.swirl.css'
+                }
+            ],
+            resources_js: [
+                { src: 'lib/jquery-1.7.1.min.js' },
+                { src: 'test.js' }
             ],
             buttons: [
                 {
-                    title: 'Home',
-                    url: 'index.html',
-                    id: 'home-button',
-                    events: {
-                        click: function() {
-                            $('html, body').stop().animate({
-                                scrollTop: 0
-                            }, 500);
-                        }
-                    }
+                    title: 'Contents',
+                    url: 'folder_contents',
+                    category: 'leftactions'
                 },
                 {
-                    title: 'Dropdown',
-                    id: 'dropdown-button',
-                    buttons: [
-                        {
-                            title: 'Item 1',
-                            url: 'http://www.google.com'
-                        },
-                        {
-                            title: 'Item 2'
-                        },
-                        {
-                            title: 'Item 3'
-                        },
-                        {
-                            title: 'Item 5'
-                        },
-                        {
-                            title: 'Item 6'
-                        }
-                    ],
-                }
+                    title: 'View',
+                    url: 'view',
+                    category: 'leftactions'
+                },
+                {
+                    title: 'Sharing',
+                    url: '@@sharing',
+                    category: 'leftactions'
+                },
+                {
+                    title: 'Display',
+                    url: 'display',
+                    category: 'rightactions'
+                },
+                {
+                    title: 'Add new ...',
+                    url: '@@add',
+                    category: 'rightactions'
+                },
+                {
+                    title: 'State: Private',
+                    url: '@@change-state',
+                    category: 'rightactions'
+                },
+
             ]
         });
     </script>
@@ -71,7 +77,7 @@
         <div id="content">
 
             <h1>
-                <span class="demo">toolbar.js</span>
+                <span class="demo">plone.toolbar.js</span>
                 - iframe toolbar for your CMS
             </h1>
 
