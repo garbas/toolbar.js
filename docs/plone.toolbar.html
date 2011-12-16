@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>plone.toolbar.js</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>plone.toolbar.js</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-0'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-0">#</a>
+        </div>
+        <p>Version: 0.1 (not released)</p>
+<p>(c) 2011 Rok Garbas</p>
+<p>May be freely distributed under the BSD license.</p>
+<p>For all details and documentation:
+<a href="http://garbas.github.com/plone.toolbar.js">http://garbas.github.com/plone.toolbar.js</a></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">$</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-1'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-1">#</a>
+        </div>
+        <h1>Namespace</h1>
+<p>ensure there is "plone" namespace</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span> <span class="o">||</span> <span class="p">{};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-2'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-2">#</a>
+        </div>
+        <h1>Utilities</h1>
+<p>ensure there is "plone.utils" namespace</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">utils</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">utils</span> <span class="o">||</span> <span class="p">{};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-3'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-3">#</a>
+        </div>
+        <h2>resources_css</h2>
+<p>Utility which creates link/style element from resources_css passed
+as argument.</p>
+<p>Code was taken from Products.ResourceRegistries and converted into
+javascript.</p>
+<p>Example:</p>
+<pre><code>$.plone.utils.resources_css([
+    {src: 'main.css'},
+    {rendering: 'import', src: 'main.css'},
+    {rendering: 'inline', content: '* { margin: 0; }'},
+    {conditionalcomment: 'IE 6', src: 'main.css'},
+]);
+</code></pre>
+<p>Which will output...</p>
+<pre><code>&lt;link media="screen" rel="stylesheet" title="" href="main.css" /&gt;
+
+&lt;style type="text/css" media="screen"&gt;
+    @import url(main.css);
+&lt;/style&gt;
+
+&lt;style type="text/css" media="screen"&gt;
+     * { margin: 0; }
+&lt;/style&gt;
+
+&lt;!--[if IE 6]&gt;
+&lt;link media="screen" rel="stylesheet" title="" href="main.css" /&gt;
+&lt;![endif]--&gt;
+</code></pre>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">resources_css</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resources</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-4'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-4">#</a>
+        </div>
+        <p>here we will collect all resources as list of strings</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">styles</span> <span class="o">=</span> <span class="p">[];</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-5'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-5">#</a>
+        </div>
+        <p>processing every resource in resources list</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">resources</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-6'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-6">#</a>
+        </div>
+        <p>end style string which we will append to styles variable</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">style</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-7'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-7">#</a>
+        </div>
+        <p>default values for css resource</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+                <span class="nx">rendering</span><span class="o">:</span> <span class="s1">&#39;link&#39;</span><span class="p">,</span>
+                <span class="nx">media</span><span class="o">:</span> <span class="s1">&#39;screen&#39;</span><span class="p">,</span>
+                <span class="nx">rel</span><span class="o">:</span> <span class="s1">&#39;stylesheet&#39;</span><span class="p">,</span>
+                <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;&#39;</span>
+            <span class="p">},</span> <span class="nx">options</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-8'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-8">#</a>
+        </div>
+        <p>include css as link element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">rendering</span> <span class="o">===</span> <span class="s1">&#39;link&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">style</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;&lt;link type=&quot;text/css&quot; &#39;</span> <span class="o">+</span>
+                          <span class="s1">&#39;href=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">src</span> <span class="o">+</span> <span class="s1">&#39;&quot; &#39;</span> <span class="o">+</span>
+                          <span class="s1">&#39;media=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">media</span> <span class="o">+</span> <span class="s1">&#39;&quot; &#39;</span> <span class="o">+</span>
+                          <span class="s1">&#39;rel=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">rel</span> <span class="o">+</span> <span class="s1">&#39;&quot; &#39;</span> <span class="o">+</span>
+                          <span class="s1">&#39;title=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">title</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span>
+                          <span class="s1">&#39;/&gt;&#39;</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-9'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-9">#</a>
+        </div>
+        <p>include css as style element which is importing/pointing to
+other css</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">rendering</span> <span class="o">===</span> <span class="s1">&#39;import&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">style</span> <span class="o">=</span> <span class="s1">&#39;&lt;style type=&quot;text/css&quot; media=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">media</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;    @import url(&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">src</span> <span class="o">+</span> <span class="s1">&#39;);&#39;</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/style&gt;&#39;</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-10'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-10">#</a>
+        </div>
+        <p>include css as inline css inside style element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">rendering</span> <span class="o">===</span> <span class="s1">&#39;inline&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">style</span> <span class="o">=</span> <span class="s1">&#39;&lt;style type=&quot;text/css&quot; media=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">media</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span>
+                        <span class="nx">item</span><span class="p">.</span><span class="nx">content</span> <span class="o">+</span>
+                        <span class="s1">&#39;&lt;/style&gt;&#39;</span><span class="p">;</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-11'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-11">#</a>
+        </div>
+        <p>wrap around with conditional comment</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">conditionalcomment</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">style</span> <span class="o">=</span> <span class="s1">&#39;&lt;!--[if &#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">conditionalcomment</span> <span class="o">+</span> <span class="s1">&#39;]&gt;&#39;</span> <span class="o">+</span>
+                    <span class="nx">style</span> <span class="o">+</span> <span class="s1">&#39;&lt;![endif]--&gt;&#39;</span><span class="p">;</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-12'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-12">#</a>
+        </div>
+        <p>add style string to styles list</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">styles</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
+
+        <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-13'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-13">#</a>
+        </div>
+        <p>join and return as string</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">return</span> <span class="nx">styles</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+    <span class="p">};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-14'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-14">#</a>
+        </div>
+        <h2>resources_js</h2>
+<p>Utility which creates script element from resources_js passed as
+argument.</p>
+<p>Code was taken from Products.ResourceRegistries and converted into
+javascript.</p>
+<p>Example:</p>
+<pre><code>$.plone.utils.resources_js([
+    {src: 'main.js'},
+    {inline: true, content: 'console.log("test"); '},
+    {conditionalcomment: 'lte IE 6', src: 'main.js'}
+]);
+</code></pre>
+<p>Which will output...</p>
+<pre><code>&lt;script type="text/javascript" src="main.js"&gt;&lt;/script&gt;
+
+&lt;script type="text/javascript"&gt;
+    console.log("test");
+&lt;/script&gt;
+
+&lt;!--[if lte IE 6]&gt;
+&lt;script type="text/javascript" src="main.js"&gt;&lt;/script&gt;
+&lt;![endif]--&gt;
+</code></pre>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">resources_js</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">resources</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-15'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-15">#</a>
+        </div>
+        <p>here we will collect all resources as list of strings</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[];</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-16'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-16">#</a>
+        </div>
+        <p>processing every resource in resources list</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">resources</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-17'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-17">#</a>
+        </div>
+        <p>include javascript as script element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">script</span> <span class="o">=</span> <span class="s1">&#39;&lt;scr&#39;</span> <span class="o">+</span> <span class="s1">&#39;ipt type=&quot;text/javascript&quot;&#39;</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-18'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-18">#</a>
+        </div>
+        <p>as javascript code inside element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">inline</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">script</span> <span class="o">+=</span> <span class="s1">&#39;&gt;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">content</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-19'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-19">#</a>
+        </div>
+        <p>as pointing to javascript file</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">script</span> <span class="o">+=</span> <span class="s1">&#39; src=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">src</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span><span class="p">;</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-20'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-20">#</a>
+        </div>
+        <p>closing script element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">script</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/scr&#39;</span> <span class="o">+</span> <span class="s1">&#39;ipt&gt;&#39;</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-21'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-21">#</a>
+        </div>
+        <p>wrap around with conditional comment</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">conditionalcomment</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">script</span> <span class="o">=</span> <span class="s1">&#39;&lt;!--[if &#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">conditionalcomment</span> <span class="o">+</span> <span class="s1">&#39;]&gt;&#39;</span> <span class="o">+</span>
+                    <span class="nx">script</span> <span class="o">+</span> <span class="s1">&#39;&lt;![endif]--&gt;&#39;</span><span class="p">;</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-22'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-22">#</a>
+        </div>
+        <p>add script string to styles list</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">scripts</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">script</span><span class="p">);</span>
+
+        <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-23'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-23">#</a>
+        </div>
+        <p>join and return as string</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">return</span> <span class="nx">scripts</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+
+    <span class="p">};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-24'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-24">#</a>
+        </div>
+        <h1>Buttons</h1>
+<p>Here we cover logic of how buttons and categories are render, but not
+where they are placed, except in the case of submenus.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">Buttons</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">buttons</span><span class="p">,</span> <span class="nx">global_options</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-25'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-25">#</a>
+        </div>
+        <p>registry of categories inside which buttons are listed</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">categories</span> <span class="o">=</span> <span class="p">{};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-26'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-26">#</a>
+        </div>
+        <p>we group buttons into categories</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">buttons</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-27'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-27">#</a>
+        </div>
+        <p>default options of a button</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+                <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>
+                <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="nx">klass</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="nx">category</span><span class="o">:</span> <span class="s1">&#39;default&#39;</span>
+            <span class="p">},</span> <span class="nx">options</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-28'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-28">#</a>
+        </div>
+        <p>we represent button as "a" element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">button</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;a/&gt;&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
+                <span class="s1">&#39;href&#39;</span><span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+                <span class="s1">&#39;class&#39;</span><span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">klass</span>
+            <span class="p">}).</span><span class="nx">html</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-29'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-29">#</a>
+        </div>
+        <p>if icon was defined we create img element and insert it into
+button element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">icon</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">item</span><span class="p">.</span><span class="nx">icon</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">button</span><span class="p">.</span><span class="nx">prepend</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">icon</span> <span class="o">+</span> <span class="s1">&#39;&quot; /&gt;&#39;</span><span class="p">));</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-30'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-30">#</a>
+        </div>
+        <p>we wrap button ("a" element) with "li" element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">button_wrapper</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;li/&gt;&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
+                <span class="s1">&#39;id&#39;</span><span class="o">:</span> <span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+                <span class="s1">&#39;class&#39;</span><span class="o">:</span> <span class="s1">&#39;toolbar-button&#39;</span>
+            <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-31'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-31">#</a>
+        </div>
+        <p>we now append button to button wrapper element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">button_wrapper</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-32'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-32">#</a>
+        </div>
+        <p>if submenu is defined here is how we create it</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">submenu</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-33'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-33">#</a>
+        </div>
+        <p>we instantiate Buttons as they were before just now we pass
+submenu since this is now our sub list of buttons</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                <span class="kd">var</span> <span class="nx">submenu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Buttons</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">submenu</span><span class="p">,</span> <span class="nx">global_options</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-34'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-34">#</a>
+        </div>
+        <p>for each category we append buttons</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">submenu</span><span class="p">.</span><span class="nx">categories</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">,</span> <span class="nx">items</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">button_wrapper</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span>
+                        <span class="nx">submenu</span><span class="p">.</span><span class="nx">render_category</span><span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="nx">category</span><span class="p">,</span>
+                            <span class="s1">&#39;toolbar-submenu&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">());</span>
+                <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-35'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-35">#</a>
+        </div>
+        <p>on click we should </p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                <span class="nx">button</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+
+                    <span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">parent</span><span class="p">(),</span>  <span class="c1">// current button</span>
+                        <span class="nx">iframe</span> <span class="o">=</span> <span class="nx">global_options</span><span class="p">.</span><span class="nx">iframe</span><span class="p">,</span>  <span class="c1">// iframe element </span>
+                        <span class="nx">iframe_doc</span> <span class="o">=</span> <span class="nx">global_options</span><span class="p">.</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">contents</span><span class="p">();</span>  <span class="c1">// iframe document </span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-36'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-36">#</a>
+        </div>
+        <p>closing submenu</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                    <span class="k">if</span> <span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;activated&#39;</span><span class="p">))</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-37'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-37">#</a>
+        </div>
+        <p>removing marker class which was marking button as
+activated / open</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">el</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;activated&#39;</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-38'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-38">#</a>
+        </div>
+        <p>hiding submenu</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&gt; ul&#39;</span><span class="p">,</span> <span class="nx">el</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-39'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-39">#</a>
+        </div>
+        <p>shrinking iframe to its initial height</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">iframe</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">global_options</span><span class="p">.</span><span class="nx">initial_height</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-40'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-40">#</a>
+        </div>
+        <p>removing marker class which set iframe as stretched</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">iframe</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;toolbar-dropdown-activated&#39;</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-41'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-41">#</a>
+        </div>
+        <p>opening submenu</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-42'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-42">#</a>
+        </div>
+        <p>we make sure all submenus are hidden and deactivated</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.activated&#39;</span><span class="p">,</span> <span class="nx">iframe_doc</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;activated&#39;</span><span class="p">);</span>
+                        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.toolbar-submenu&#39;</span><span class="p">,</span> <span class="nx">iframe_doc</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-43'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-43">#</a>
+        </div>
+        <p>we provide helper class object so themes can style when
+dropdown of submenu is activated / open</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">el</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;activated&#39;</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-44'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-44">#</a>
+        </div>
+        <p>we show submenu, was initialy hidden</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&gt; ul&#39;</span><span class="p">,</span> <span class="nx">el</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-45'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-45">#</a>
+        </div>
+        <p>we stretch iframe over whole top frame which should
+be marked as transparent so user wont see it</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">global_options</span><span class="p">.</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">height</span><span class="p">());</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-46'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-46">#</a>
+        </div>
+        <p>we also mark iframe as activates which means its
+being stretched</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                        <span class="nx">global_options</span><span class="p">.</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;toolbar-dropdown-activated&#39;</span><span class="p">);</span>
+
+                    <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-47'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-47">#</a>
+        </div>
+        <p>if submenu is define we defer click on button</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                    <span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+
+                <span class="p">});</span>
+
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-48'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-48">#</a>
+        </div>
+        <p>if some custom code is needed we use <code>exec</code> option</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">exec</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">item</span><span class="p">.</span><span class="nx">exec</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">button_wrapper</span><span class="p">);</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-49'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-49">#</a>
+        </div>
+        <p>if category does not yet exists we create it</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">categories</span><span class="p">[</span><span class="nx">item</span><span class="p">.</span><span class="nx">category</span><span class="p">]</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">categories</span><span class="p">[</span><span class="nx">item</span><span class="p">.</span><span class="nx">category</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-50'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-50">#</a>
+        </div>
+        <p>appending button to category</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">categories</span><span class="p">[</span><span class="nx">item</span><span class="p">.</span><span class="nx">category</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">button_wrapper</span><span class="p">);</span>
+
+        <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-51'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-51">#</a>
+        </div>
+        <p>this is helper function to render category</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="kd">function</span> <span class="nx">render_category</span><span class="p">(</span><span class="nx">buttons</span><span class="p">,</span> <span class="nx">custom_category</span><span class="p">,</span> <span class="nx">custom_klass</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-52'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-52">#</a>
+        </div>
+        <p>we can provide custom options for rendering (custom_category,
+custom_klass)</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">category</span> <span class="o">=</span> <span class="nx">custom_category</span> <span class="o">||</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span>
+                <span class="nx">klass</span> <span class="o">=</span> <span class="nx">custom_klass</span> <span class="o">||</span> <span class="s1">&#39;toolbar-category toolbar-category-&#39;</span> <span class="o">+</span> <span class="nx">category</span><span class="p">,</span>
+                <span class="nx">el</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;ul/&gt;&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="nx">klass</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-53'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-53">#</a>
+        </div>
+        <p>appending buttong to category element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">buttons</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">button</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">button</span><span class="p">);</span>
+            <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-54'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-54">#</a>
+        </div>
+        <p>return category element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">return</span> <span class="nx">el</span><span class="p">;</span>
+        <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-55'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-55">#</a>
+        </div>
+        <p>Buttons API</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">categories</span><span class="o">:</span> <span class="nx">categories</span><span class="p">,</span>
+            <span class="nx">render_category</span><span class="o">:</span> <span class="nx">render_category</span>
+        <span class="p">};</span>
+
+    <span class="p">};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-56'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-56">#</a>
+        </div>
+        <h1>Toolbar</h1>
+<p>Here we create iframe and initialize buttons and map them to categories
+which were predefined in template or we simple append them</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="kd">var</span> <span class="nx">Toolbar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;iframe/&gt;&#39;</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">attributes</span><span class="p">),</span>  <span class="c1">// iframe element</span>
+            <span class="nx">buttons</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Buttons</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">buttons</span><span class="p">,</span> <span class="nx">options</span><span class="p">),</span>  <span class="c1">// buttons instance</span>
+            <span class="nx">toolbar</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">toolbar_template</span><span class="p">),</span>  <span class="c1">// toolbar default structure</span>
+            <span class="nx">css</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">resources_css</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">resources_css</span><span class="p">),</span>  <span class="c1">// css resources string</span>
+            <span class="nx">js</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">resources_js</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">resources_js</span><span class="p">);</span>  <span class="c1">// javascript resources string</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-57'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-57">#</a>
+        </div>
+        <p>render categories and append them iframe</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">buttons</span><span class="p">.</span><span class="nx">categories</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">category</span><span class="p">,</span> <span class="nx">items</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-58'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-58">#</a>
+        </div>
+        <p>toolbar category which we are searching in template</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">category_el</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.toolbar-category-&#39;</span> <span class="o">+</span> <span class="nx">category</span><span class="p">,</span> <span class="nx">toolbar</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-59'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-59">#</a>
+        </div>
+        <p>if no category found in template then we append it</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">category_el</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.toolbar&#39;</span><span class="p">,</span> <span class="nx">toolbar</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span>
+                    <span class="nx">buttons</span><span class="p">.</span><span class="nx">render_category</span><span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="nx">category</span><span class="p">));</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-60'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-60">#</a>
+        </div>
+        <p>replace category element with generated category with buttons</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">category_el</span><span class="p">.</span><span class="nx">replaceWith</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="nx">buttons</span><span class="p">.</span><span class="nx">render_category</span><span class="p">(</span><span class="nx">items</span><span class="p">,</span> <span class="nx">category</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">}</span>
+
+        <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-61'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-61">#</a>
+        </div>
+        <p>when iframe is loaded</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">el</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-62'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-62">#</a>
+        </div>
+        <p>append css and javascript resorces</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">el</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">open</span><span class="p">();</span>
+            <span class="nx">el</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">+</span>
+                <span class="s1">&#39;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&#39;</span> <span class="o">+</span> <span class="nx">css</span> <span class="o">+</span> <span class="nx">js</span> <span class="o">+</span> <span class="s1">&#39;&lt;/body&gt;&lt;/html&gt;&#39;</span><span class="p">);</span>
+            <span class="nx">el</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-63'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-63">#</a>
+        </div>
+        <p>iframe body element</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="kd">var</span> <span class="nx">el_body</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="nx">el</span><span class="p">.</span><span class="nx">contents</span><span class="p">());</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-64'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-64">#</a>
+        </div>
+        <p>we pass iframe as element in options later on we access it in
+Buttons as global_options.iframe </p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">options</span><span class="p">.</span><span class="nx">iframe</span> <span class="o">=</span> <span class="nx">el</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-65'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-65">#</a>
+        </div>
+        <p>we also remember initial height since we will later use it when
+creating overlay</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">options</span><span class="p">.</span><span class="nx">initial_height</span> <span class="o">=</span> <span class="nx">el</span><span class="p">.</span><span class="nx">height</span><span class="p">();</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-66'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-66">#</a>
+        </div>
+        <p>we need to check any click on iframe</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">el</span><span class="p">.</span><span class="nx">contents</span><span class="p">().</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">options</span><span class="o">:</span> <span class="nx">options</span> <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+
+                <span class="kd">var</span> <span class="nx">iframe</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iframe</span><span class="p">,</span>
+                    <span class="nx">el</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">contents</span><span class="p">(),</span>
+                    <span class="nx">initial_height</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">initial_height</span><span class="p">;</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-67'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-67">#</a>
+        </div>
+        <p>if iframe is stretched then we shrink it</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">iframe</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;toolbar-dropdown-activated&#39;</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.activated&#39;</span><span class="p">,</span> <span class="nx">el</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;activated&#39;</span><span class="p">);</span>
+                    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.toolbar-submenu&#39;</span><span class="p">,</span> <span class="nx">el</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+                    <span class="nx">iframe</span><span class="p">.</span><span class="nx">height</span><span class="p">(</span><span class="nx">initial_height</span><span class="p">);</span>
+                    <span class="nx">iframe</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;toolbar-dropdown-activated&#39;</span><span class="p">);</span>
+                <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-68'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-68">#</a>
+        </div>
+        <p>if click on button was made then we redirect main frame to
+new location</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;toolbar-button&#39;</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="nb">window</span><span class="p">.</span><span class="nx">parent</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">);</span>
+                <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-69'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-69">#</a>
+        </div>
+        <p>we ignore any other click</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>                <span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+
+            <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-70'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-70">#</a>
+        </div>
+        <p>append toolbar element to iframe body </p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="nx">el_body</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">toolbar</span><span class="p">);</span>
+
+        <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-71'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-71">#</a>
+        </div>
+        <p>when document is ready we prepend iframe to body</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">prepend</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+        <span class="p">});</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-72'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-72">#</a>
+        </div>
+        <p>toolbar api</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;el&#39;</span><span class="o">:</span> <span class="nx">el</span><span class="p">,</span>
+            <span class="s1">&#39;buttons&#39;</span><span class="o">:</span> <span class="nx">buttons</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-73'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-73">#</a>
+        </div>
+        <p>TODO: destroy and add_button option are missing</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="p">};</span>
+
+    <span class="p">};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-74'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-74">#</a>
+        </div>
+        <h1>Initialization</h1>
+<p>Initialization of toolbar, as well as retriving, destroying and
+manipulation already created toolbar.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-75'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-75">#</a>
+        </div>
+        <p>Method for retriving already created toolbar</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">toolbar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-76'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-76">#</a>
+        </div>
+        <p>Check if we are dealing with iframe</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="s1">&#39;IFRAME&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;This is not iframe!&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="p">{};</span>
+        <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-77'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-77">#</a>
+        </div>
+        <p>Was toolbar initialized already?</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;toolbar&#39;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Toolbar was not initialized on this iframe!&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="p">{};</span>
+        <span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-78'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-78">#</a>
+        </div>
+        <p>return Toolbar instance</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;toolbar&#39;</span><span class="p">);</span>
+
+    <span class="p">};</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-79'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-79">#</a>
+        </div>
+        <p>Initialization method</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">plone</span><span class="p">.</span><span class="nx">toolbar</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">custom_options</span><span class="p">)</span> <span class="p">{</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-80'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-80">#</a>
+        </div>
+        <p>Merge custom provided option with default ones</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="nx">$</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+            <span class="nx">attributes</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;plone-toolbar&#39;</span><span class="p">,</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;plone-toolbar&#39;</span><span class="p">,</span>
+                <span class="nx">allowtransparency</span><span class="o">:</span> <span class="s1">&#39;true&#39;</span>
+            <span class="p">},</span>
+            <span class="nx">toolbar_template</span><span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;&lt;div class=&quot;toolbar-wrapper&quot;&gt;&#39;</span> <span class="o">+</span>
+                <span class="s1">&#39; &lt;div class=&quot;toolbar&quot;&gt;&lt;/div&gt;&#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">,</span>
+            <span class="nx">buttons</span><span class="o">:</span> <span class="p">[]</span>
+        <span class="p">},</span> <span class="nx">custom_options</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-81'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-81">#</a>
+        </div>
+        <p>Initialize Toolbar</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="kd">var</span> <span class="nx">toolbar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Toolbar</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-82'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-82">#</a>
+        </div>
+        <p>Save Toolbar instance to iframe element data</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="nx">$</span><span class="p">(</span><span class="nx">toolbar</span><span class="p">.</span><span class="nx">el</span><span class="p">).</span><span class="nx">data</span><span class="p">(</span><span class="s1">&#39;toolbar&#39;</span><span class="p">,</span> <span class="nx">toolbar</span><span class="p">);</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-83'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-83">#</a>
+        </div>
+        <p>Return toolbar as we would with $.fn.toolbar</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">return</span> <span class="nx">toolbar</span><span class="p">;</span>
+
+    <span class="p">};</span>
+
+<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+
+</pre></div></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

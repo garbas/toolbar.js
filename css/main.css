@@ -1,3 +1,52 @@
+
+td.docs {
+}
+td.docs, th.docs {
+    display: block;
+    width: 350px;
+    padding: 0;
+    margin: 0 1em 0 0;
+}
+td.code, th.code {
+    border: 0;
+    background: none;
+    padding: 0;
+}
+
+.octothorpe {
+    color: #FFFFFF;
+}
+
+pre {
+    line-height: 2em;
+    font-size: 0.8em;
+    opacity: 0.9;
+    padding: 0.5em !important;
+    margin: 0 !important;
+}
+
+#background {
+    border: 0;
+    background: none;
+}
+
+.code pre, .docs p code {
+    max-width: 626px;
+    background-color: transparent;
+}
+
+pre, td.code {
+    /* Fallback for web browsers that don't support RGBa */
+    background-color: rgb(0, 0, 0);
+    /* RGBa with 0.6 opacity */
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#documentation {
+    font-size: 0.9em;
+}
+
+
 /*
  * Fonts
  */
@@ -37,8 +86,11 @@
 
 body {
     background: #74C2E1;
-    font-size: 16px;
+    line-height: 15px;
+    font-size: 15px;
     font-family: 'AllerLightRegular', Arial, sans-serif;
+    width: 960px;
+    margin: 0 auto;
 }
 
 h1, h2, h3, h4, h5 {
@@ -52,11 +104,20 @@ h2, h3, h4, h5 {
 }
 
 h1 {
-    font-size: 4em;
+    font-size: 3em;
+    margin-top: 0.5em;
 }
 
 h2 {
-    font-size: 2.5em;
+    font-size: 2em;
+}
+
+a {
+    color: white;
+}
+
+ul {
+    margin-left: 2em;
 }
 
 p {
@@ -70,42 +131,39 @@ p {
 
 #container {
     width: 960px;
-    margin: 66px auto 1em auto;
+    margin: 0 auto;
 }
 
 #content {
-
-    color: #CCCCCC;
-
+    color: #FFFFFF;
     padding: 1em;
-
-    /* Fallback for web browsers that doesn't support RGBa */
-    background: rgb(0, 0, 0);
-    /* RGBa with 0.6 opacity */
-    background: rgba(0, 0, 0, 0.6);
-
+    background: #226699;
     border-radius: 0.2em;
     -moz-border-radius: 0.2em;
     -webkit-border-radius: 0.2em;
     -o-border-radius: 0.2em;
-
+    text-shadow: 1px 1px 5px #000000;
 }
 
+#plone-toolbar,
 #swirl-toolbar {
-    position: fixed;
     height: 56px;
-    width: 100%;
-    top: 0;
-    left: 0;
+    width: 960px;
 }
 
+
+.section {
+    margin: 2em 0;
+}
 
 .demo {
     color: #0191C8;
 }
 
 h1 span.demo {
-    text-shadow: 1px 1px 5px #000000;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    display: inline-block;
 }
 
 .center {
