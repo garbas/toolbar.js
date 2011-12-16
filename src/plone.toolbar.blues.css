@@ -1,6 +1,6 @@
 * {
     font-family: Arial;
-    font-size: 14px;
+    font-size: 13px;
     margin: 0;
     padding: 0;
     border: 0;
@@ -20,7 +20,7 @@ body {
 
 .toolbar {
     width: 100%;
-    height: 52px;
+    height: 46px;
 
     background: #0191C8;
 
@@ -44,9 +44,9 @@ body {
     font-family: Helvetica,Arial,sans-serif;
     text-decoration: none;
 
-    padding: 0.6em 1em;
+    padding: 0.3em 0.5em;
     margin: 0 0.5em;
-    line-height: 4em;
+    line-height: 3.5em;
 
     text-shadow: 1px 1px 2px black;
     -moz-text-shadow: 1px 1px 2px black;
@@ -59,6 +59,7 @@ body {
     -o-border-radius: 0.3em;
 }
 
+.toolbar-button.activated a,
 .toolbar-button a:hover {
     color: #444;
     background: #FFFFFF;
@@ -68,9 +69,46 @@ body {
     -o-text-shadow: none;
 }
 
+.toolbar-submenu {
+    background: #FFF;
+    position: relative;
+    top: -9px;
+    right: 6px;
+    border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+    -o-border-radius: 0.3em;
+    padding: 1em 0.5em;
+}
+
+.toolbar-submenu .toolbar-button {
+    display: block;
+    float: none;
+}
+
+.toolbar-submenu .toolbar-button a {
+    display: block;
+    color: #333;
+    text-shadow: none;
+    -moz-text-shadow: none;
+    -webkit-text-shadow: none;
+    -o-text-shadow: none;
+    line-height: 1.5em;
+    padding: 0.2em 0.5em;
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -o-border-radius: 0;
+}
+
+.toolbar-submenu .toolbar-button a:hover {
+    background-color: #AAAAAA;
+}
+
 .toolbar-category-leftactions {
     float: left;
 }
+
 .toolbar-category-rightactions {
     float: right;
 }

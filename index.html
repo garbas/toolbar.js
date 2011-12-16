@@ -48,15 +48,15 @@
          url: '#features',
          category: 'leftactions'
          },
-        {title: 'Examples',
-         url: '#examples',
+        {title: 'Example',
+         url: '#example',
          category: 'leftactions'
          },
         {title: 'Documentation',
          url: '#docs',
          category: 'leftactions'
          },
-        {title: 'Themes',
+        {title: 'Themes &#9660;',
          url: '#theme',
          category: 'rightactions',
          }]
@@ -84,6 +84,13 @@
             resources_css: [{ src: 'src/plone.toolbar.swirl.css' }]
         }
     };
+    buttons[buttons.length-1].submenu = [];
+    for (var theme in themes) {
+        buttons[buttons.length-1].submenu.push({
+            title: theme,
+            url: '?theme='+theme
+        });
+    }
 
     var theme = getURLParam('theme', 'blues');
 
@@ -94,10 +101,10 @@
     options = $.extend(options, themes[theme]);
     $.plone.toolbar(options);
 
-        $.get('docs/plone.toolbar.html', {}, function(data) {
-            $('#documentation').html($($(data)[7]).html());
-            $('#documentation table thead h1').html('Documentation');
-        }, 'html');
+    $.get('docs/plone.toolbar.html', {}, function(data) {
+        $('#documentation').html($($(data)[7]).html());
+        $('#documentation table thead h1').html('Documentation');
+    }, 'html');
 
 })(jQuery);
 
@@ -132,7 +139,7 @@
             </div>
 
             <div class="section">
-                <h1><a name="examples">Examples</a></h1>
+                <h1><a name="example">Example</a></h1>
                 <pre>
 &lt;script type="text/javascript" charset="utf-8"&gt;
 

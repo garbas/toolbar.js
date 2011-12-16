@@ -132,6 +132,8 @@ p {
 #container {
     width: 960px;
     margin: 0 auto;
+    position: relative;
+    top: 55px;
 }
 
 #content {
@@ -147,8 +149,11 @@ p {
 
 #plone-toolbar,
 #swirl-toolbar {
-    height: 56px;
+    height: 46px;
     width: 960px;
+    background: transparent;
+    position: fixed;
+    z-index: 9999;
 }
 
 

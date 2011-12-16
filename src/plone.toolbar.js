@@ -283,7 +283,7 @@
                     }
 
                     // if submenu is define we defer click on button
-                    return e.preventDefault();
+                    return false;
 
                 });
 
